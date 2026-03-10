@@ -1,6 +1,17 @@
-﻿namespace MyControlResidence.Api.Context
+﻿using Microsoft.EntityFrameworkCore;
+using MyControlResidence.Api.Entidades;
+
+namespace MyControlResidence.Api.Context;
+
+public class AppDbContext : DbContext
 {
-    public class AppDbContext
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
     }
+
+    public DbSet<Pessoa> Pessoas { get; set; }
+
+    public DbSet<Categoria> Categorias { get; set; }
+
+    public DbSet<Transacao> Transacoes { get; set; }
 }
