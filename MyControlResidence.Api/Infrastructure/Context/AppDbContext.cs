@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MyControlResidence.Api.Entidades;
+using MyControlResidence.Api.Domain.Entidades;
 
-namespace MyControlResidence.Api.Context;
+namespace MyControlResidence.Api.Infrastructure.Context;
 
 public class AppDbContext : DbContext
 {

@@ -1,4 +1,4 @@
-﻿namespace MyControlResidence.Api.Enums
+﻿namespace MyControlResidence.Api.Domain.Enums
 {
     public enum FinalidadeCategoria
     {

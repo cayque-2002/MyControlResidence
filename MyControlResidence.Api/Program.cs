@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using MyControlResidence.Api.Context;
+using MyControlResidence.Api.Infrastructure.Context;
 
 
 
@@ -12,6 +12,12 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=mycontrolresidence.db"));
+
+// Registrando os serviços de aplicação
+builder.Services.AddScoped<CategoriaService>();
+builder.Services.AddScoped<PessoaService>();
+builder.Services.AddScoped<TransacaoService>();
+builder.Services.AddScoped<RelatorioService>();
 
 var app = builder.Build();
 

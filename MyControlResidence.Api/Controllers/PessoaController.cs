@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MyControlResidence.Api.Context;
-using MyControlResidence.Api.Entidades;
+using MyControlResidence.Api.Infrastructure.Context;
+using MyControlResidence.Api.Domain.Entidades;
 
 namespace MyControlResidence.Api.Controllers;
 
@@ -9,25 +9,37 @@ namespace MyControlResidence.Api.Controllers;
 [Route("api/[controller]")]
 public class PessoaController : ControllerBase
 {
-    private readonly AppDbContext _context;
+    private readonly PessoaService _service;
 
-    public PessoaController(AppDbContext context)
+    public PessoaController(PessoaService service)
     {
-        _context = context;
+        _service = service;
     }
 
     [HttpGet]
     public async Task<ActionResult<List<Pessoa>>> GetAll()
     {
-        return await _context.Pessoas.ToListAsync();
+        return Ok(await _service.GetAll());
     }
 
     [HttpPost]
-    public async Task<ActionResult<Pessoa>> Create(Pessoa pessoa)
+    public async Task<IActionResult> Create(CreatePessoaDto dto)
     {
-        _context.Pessoas.Add(pessoa);
-        await _context.SaveChangesAsync();
+        var pessoa = await _service.Create(dto);
+        return Ok(pessoa);
+    }
 
-        return CreatedAtAction(nameof(GetAll), new { id = pessoa.Id }, pessoa);
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(long id, UpdatePessoaDto dto)
+    {
+        await _service.Update(id, dto);
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(long id)
+    {
+        await _service.Delete(id);
+        return NoContent();
     }
 }

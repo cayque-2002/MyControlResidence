@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MyControlResidence.Api.Context;
-using MyControlResidence.Api.Entidades;
+using MyControlResidence.Api.Domain.Entidades;
+using MyControlResidence.Api.Infrastructure.Context;
 
 namespace MyControlResidence.Api.Controllers;
 
@@ -9,25 +9,25 @@ namespace MyControlResidence.Api.Controllers;
 [Route("api/[controller]")]
 public class CategoriaController : ControllerBase
 {
-    private readonly AppDbContext _context;
+    private readonly CategoriaService _service;
 
-    public CategoriaController(AppDbContext context)
+    public CategoriaController(CategoriaService service)
     {
-        _context = context;
+        _service = service;
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<Categoria>>> GetAll()
+    public async Task<ActionResult<List<CreateCategoriaDto>>> GetAll()
     {
-        return await _context.Categorias.ToListAsync();
+        return Ok(await _service.GetAll());
     }
 
     [HttpPost]
-    public async Task<ActionResult<Categoria>> Create(Categoria categoria)
+    public async Task<ActionResult<Categoria>> Create(CreateCategoriaDto dto)
     {
-        _context.Categorias.Add(categoria);
-        await _context.SaveChangesAsync();
+        var categoria = await _service.Create(dto);
+        
+        return Ok(categoria);
 
-        return CreatedAtAction(nameof(GetAll), new { id = categoria.Id }, categoria);
     }
 }
