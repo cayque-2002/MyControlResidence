@@ -6,7 +6,7 @@ import { toast } from "react-toastify"
 import {
   FinalidadeCategoria,
   FinalidadeCategoriaTexto
-} from "../types/FinalidadeCategoria"
+} from "../types/finalidadeCategoria"
 
 import {
   getCategorias,
