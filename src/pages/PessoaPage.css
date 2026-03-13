@@ -1,0 +1,59 @@
+.crud-container{
+  width:100%;
+  max-width:900px;
+  margin:auto;
+}
+
+.crud-table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:20px;
+}
+
+.crud-table th{
+  background:#2a2a2a;
+  padding:12px;
+  text-align:left;
+}
+
+.crud-table td{
+  padding:10px;
+  border-bottom:1px solid #444;
+}
+
+.crud-table tr:hover{
+  background:#2f2f2f;
+}
+
+.acoes{
+  display:flex;
+  gap:10px;
+}
+
+.btn-novo{
+  padding:10px 18px;
+  background:#4ade80;
+  border:none;
+  border-radius:5px;
+  cursor:pointer;
+}
+
+.btn-editar{
+  padding:6px 12px;
+  background:#60a5fa;
+  border:none;
+  border-radius:4px;
+}
+
+.btn-excluir{
+  padding:6px 12px;
+  background:#f87171;
+  border:none;
+  border-radius:4px;
+}
+
+.crud-footer{
+  margin-top:20px;
+  display:flex;
+  justify-content:flex-end;
+}
