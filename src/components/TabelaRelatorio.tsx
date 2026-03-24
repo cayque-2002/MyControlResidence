@@ -20,7 +20,7 @@ export default function TabelaRelatorio({ dados }:any){
         {dados.map((item:any,index:number)=>(
           <tr key={index}>
 
-            <td>{item.categoria || item.pessoa}</td>
+            <td>{item.chave}</td>
 
             <td className="valor-receita">
               {item.receita.toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}
