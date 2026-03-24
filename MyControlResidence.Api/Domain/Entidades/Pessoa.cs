@@ -11,6 +11,6 @@ namespace MyControlResidence.Api.Domain.Entidades
 
         public int Idade { get; set; }
 
-        public DateTime DataHoraCriacao { get; set; } = DateTime.Now;
+        public DateTime DataHoraCriacao { get; set; } = DateTime.UtcNow;
     }
 }

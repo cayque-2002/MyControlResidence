@@ -12,7 +12,7 @@ namespace MyControlResidence.Api.Domain.Entidades
         public string Descricao { get; set; }
 
         public FinalidadeCategoria Finalidade { get; set; }
-        public DateTime DataHoraCriacao { get; set; }
+        public DateTime DataHoraCriacao { get; set; } = DateTime.UtcNow;
 
     }
 }
