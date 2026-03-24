@@ -2,62 +2,65 @@
 using Microsoft.EntityFrameworkCore;
 using MyControlResidence.Api.Domain.Entidades;
 using MyControlResidence.Api.Domain.Enums;
+using MyControlResidence.Api.Domain.Interfaces;
 using MyControlResidence.Api.Infrastructure.Context;
+using MyControlResidence.Api.Infrastructure.Repositorios;
+
 
 public class TransacaoService
 {
-    private readonly AppDbContext _context;
+    private readonly ITransacaoRepository _repository;
+    private readonly IPessoaRepository _pessoaRepository;
+    private readonly ICategoriaRepository _categoriaRepository;
 
-    public TransacaoService(AppDbContext context)
+    public TransacaoService(ITransacaoRepository repository, IPessoaRepository pessoaRepository,
+        ICategoriaRepository categoriaRepository)
     {
-        _context = context;
+        _pessoaRepository = pessoaRepository;
+        _categoriaRepository = categoriaRepository; 
+        _repository = repository;
     }
-
+        
     public async Task<List<Transacao>> GetAll()
     {
-        return await _context.Transacoes
-             .Include(t => t.Pessoa)
-             .Include(t => t.Categoria)
-             .ToListAsync();
+        return await _repository.GetAllAsync();
     }
 
-    public async Task<Transacao> Create(CreateTransacaoDto dto)
+    public async Task Criar(CreateTransacaoDto dto)
     {
-        var pessoa = await _context.Pessoas.FindAsync(dto.PessoaId);
-        var categoria = await _context.Categorias.FindAsync(dto.CategoriaId);
+        var pessoa = await _pessoaRepository.GetByIdAsync(dto.PessoaId);
 
         if (pessoa == null)
-            throw new BadHttpRequestException("Pessoa não encontrada");
+            throw new Exception("Pessoa não encontrada");
+
+        if (pessoa.Idade < 18 && dto.Tipo == TipoTransacao.Receita)
+            throw new Exception("Menor de idade só pode ter despesas");
+
+        var categoria = await _categoriaRepository.GetByIdAsync(dto.CategoriaId);
 
         if (categoria == null)
-            throw new BadHttpRequestException("Categoria não encontrada");
+            throw new Exception("Categoria não encontrada");
 
-        // REGRA 1: menor de idade não pode ter receita
-        if (pessoa.Idade < 18 && dto.Tipo == TipoTransacao.Receita)
-            throw new BadHttpRequestException("Menor de idade não pode possuir receitas");
+        ValidarCategoriaComTipo(dto.Tipo, categoria.Finalidade);
 
-        // REGRA 2: categoria precisa permitir o tipo da transação
-        if (categoria.Finalidade != FinalidadeCategoria.Ambas &&
-            (FinalidadeCategoria)dto.Tipo != categoria.Finalidade)
-        {
-            throw new BadHttpRequestException("Categoria não permite esse tipo de transação");
-        }
+        var transacao = new Transacao(dto.Descricao, dto.Valor, dto.Tipo, dto.PessoaId, dto.CategoriaId);
 
-        var transacao = new Transacao
-        {
-            Descricao = dto.Descricao,
-            CategoriaId = dto.CategoriaId,
-            Categoria = categoria,
-            PessoaId = dto.PessoaId,
-            Pessoa = pessoa,
-            Tipo = dto.Tipo,
-            Valor = dto.Valor,
-            DataHoraCriacao = DateTime.UtcNow
-        };
-
-        _context.Transacoes.Add(transacao);
-        await _context.SaveChangesAsync();
-
-        return transacao;
+        await _repository.AddAsync(transacao);
     }
+
+    private void ValidarCategoriaComTipo(TipoTransacao tipo, FinalidadeCategoria finalidade)
+    {
+        // REGRA: categoria com finalidade "ambas" aceita qualquer tipo
+        if (finalidade == FinalidadeCategoria.Ambas)
+            return;
+
+        // REGRA: despesa só pode usar categoria de despesa
+        if (tipo == TipoTransacao.Despesa && finalidade != FinalidadeCategoria.Despesa)
+            throw new Exception("Categoria inválida para despesa");
+
+        // REGRA: receita só pode usar categoria de receita
+        if (tipo == TipoTransacao.Receita && finalidade != FinalidadeCategoria.Receita)
+            throw new Exception("Categoria inválida para receita");
+    }
+
 }

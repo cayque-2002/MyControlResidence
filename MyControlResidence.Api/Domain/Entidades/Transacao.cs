@@ -6,6 +6,15 @@ namespace MyControlResidence.Api.Domain.Entidades
 {
     public class Transacao
     {
+        public Transacao(string descricao, decimal valor, TipoTransacao tipo, long pessoaId, long categoriaId)
+        {
+            Descricao = descricao;
+            Valor = valor;
+            Tipo = tipo;
+            PessoaId = pessoaId;
+            CategoriaId = categoriaId;
+        }
+
         public long Id { get; set; }
 
         [MaxLength(400)]
@@ -23,4 +32,21 @@ namespace MyControlResidence.Api.Domain.Entidades
 
         public DateTime DataHoraCriacao { get; set; } = DateTime.Now;
     }
+
+    //public class Transacao
+    //{
+    //    public long Id { get; private set; }
+    //    public decimal Valor { get; private set; }
+    //    public string Descricao { get; private set; }
+
+    //    public Transacao(decimal valor, string descricao)
+    //    {
+    //        if (valor <= 0)
+    //            throw new Exception("Valor deve ser maior que zero");
+
+    //        Valor = valor;
+    //        Descricao = descricao;
+    //    }
+    //}
+
 }
