@@ -4,7 +4,6 @@ import { getRelatorioCategoria, getRelatorioPessoa } from "../services/relatorio
 import ResumoCards from "../components/ResumoCards";
 import TabelaRelatorio from "../components/TabelaRelatorio";
 
-
 export default function ReportPage() {
 
   const [relatorioCategoria, setRelatorioCategoria] = useState<any>();
@@ -15,7 +14,6 @@ export default function ReportPage() {
   }, []);
 
   async function carregar() {
-
     const categoria = await getRelatorioCategoria();
     const pessoa = await getRelatorioPessoa();
 
@@ -24,27 +22,20 @@ export default function ReportPage() {
   }
 
   return (
-
     <div className="report-container">
 
-      {/* RELATORIO CATEGORIA */}
-
-      <h2 className="report-title">Relatório por Categoria</h2>
-
-      <ResumoCards relatorio={relatorioCategoria} />
-
-      <TabelaRelatorio dados={relatorioCategoria?.categoria} />
-
-
-      {/* RELATORIO PESSOA */}
-
-      <h2 className="report-title" style={{marginTop:"60px"}}>
-        Relatório por Pessoa
-      </h2>
+      {/* TOTAL GERAL */}
+      <h2 className="report-title">Total Geral</h2>
 
       <ResumoCards relatorio={relatorioPessoa} />
 
-      <TabelaRelatorio dados={relatorioPessoa?.pessoa} />
+      {/* TABELA CATEGORIA */}
+      <h3 style={{ marginTop: "50px" }}>Por Categoria</h3>
+      <TabelaRelatorio dados={relatorioCategoria?.itens} />
+
+      {/* TABELA PESSOA */}
+      <h3 style={{ marginTop: "50px" }}>Por Pessoa</h3>
+      <TabelaRelatorio dados={relatorioPessoa?.itens} />
 
     </div>
   );
