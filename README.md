@@ -24,35 +24,6 @@ O sistema permite:
 
 O backend segue o padrão **DDD (Domain Driven Design)** para organização da aplicação.
 
-## Padrões e Boas Práticas
-
-- Aplicação do princípio da Inversão de Dependência (SOLID)
-- Uso de interfaces para desacoplamento da camada de dados
-- Injeção de dependência nativa do ASP.NET Core
-- Separação em camadas (Domain, Application, Infrastructure)
-- Utilização de DTOs para evitar acoplamento entre domínio e API
-
-
----
-
-# Demonstração
-
-O sistema permite:
-
-- Cadastro de **Pessoas**
-- Cadastro de **Categorias** (Receita / Despesa / Ambas)
-- Cadastro de **Transações financeiras**
-- Relatórios financeiros por:
-  - Categoria
-  - Pessoa
-- Visualização de **saldo total**, receitas e despesas
-
----
-
-# Arquitetura
-
-O backend segue o padrão **DDD (Domain Driven Design)** para organização da aplicação.
-
 Estrutura principal:
 
 src
@@ -81,6 +52,15 @@ Principais conceitos aplicados:
 - Controllers para exposição da API
 - Entity Framework para persistência
 
+## Padrões e Boas Práticas
+
+- Aplicação do princípio da Inversão de Dependência (SOLID)
+- Uso de interfaces para desacoplamento da camada de dados
+- Injeção de dependência nativa do ASP.NET Core
+- Separação em camadas (Domain, Application, Infrastructure)
+- Utilização de DTOs para evitar acoplamento entre domínio e API
+
+
 ---
 
 # Tecnologias Utilizadas
@@ -90,7 +70,7 @@ Principais conceitos aplicados:
 - .NET 8
 - ASP.NET Core Web API
 - Entity Framework Core
-- SQL Lite (LocalDB)
+- SQLite (LocalDB)
 - Arquitetura DDD
 
 ## Frontend
