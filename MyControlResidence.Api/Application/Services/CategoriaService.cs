@@ -1,19 +1,21 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyControlResidence.Api.Infrastructure.Context;
 using MyControlResidence.Api.Domain.Entidades;
+using MyControlResidence.Api.Infrastructure.Repositorios;
+using MyControlResidence.Api.Domain.Interfaces;
 
 public class CategoriaService
 {
-    private readonly AppDbContext _context;
+    private readonly ICategoriaRepository _repository;
 
-    public CategoriaService(AppDbContext context)
+    public CategoriaService(ICategoriaRepository repository)
     {
-        _context = context;
+        _repository = repository;
     }
 
     public async Task<List<Categoria>> GetAll()
     {
-        return await _context.Categorias.ToListAsync();
+        return await _repository.GetAllAsync();
     }
 
     public async Task<Categoria> Create(CreateCategoriaDto dto)
@@ -25,8 +27,7 @@ public class CategoriaService
             DataHoraCriacao = DateTime.UtcNow
         };
 
-        _context.Categorias.Add(categoria);
-        await _context.SaveChangesAsync();
+        await _repository.AddAsync(categoria);
 
         return categoria;
     }

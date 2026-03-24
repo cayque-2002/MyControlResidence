@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using MyControlResidence.Api.Domain.Interfaces;
 using MyControlResidence.Api.Infrastructure.Context;
+using MyControlResidence.Api.Infrastructure.Repositorios;
+using MyControlResidence.Api.Middleware;
 
 
 
@@ -19,6 +22,11 @@ builder.Services.AddScoped<PessoaService>();
 builder.Services.AddScoped<TransacaoService>();
 builder.Services.AddScoped<RelatorioService>();
 
+//registrando os repositórios
+builder.Services.AddScoped<ITransacaoRepository, TransacaoRepository>();
+builder.Services.AddScoped<IPessoaRepository, PessoaRepository>();
+builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
+
 //bloqueio CORS
 builder.Services.AddCors(options =>
 {
@@ -37,6 +45,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ErrorMiddleware>();
 
 app.UseCors("AllowAll");
 

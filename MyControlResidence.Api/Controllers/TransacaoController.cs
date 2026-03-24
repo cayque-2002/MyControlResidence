@@ -26,7 +26,12 @@ public class TransacaoController : ControllerBase
     [HttpPost]
     public async Task<ActionResult> Create(CreateTransacaoDto dto)
     {
-        var transacao = await _service.Create(dto);
-        return Ok(transacao);
+        await _service.Criar(dto);
+
+        return Ok(new
+        {
+            success = true,
+            message = "Transação criada com sucesso"
+        });
     }
 }

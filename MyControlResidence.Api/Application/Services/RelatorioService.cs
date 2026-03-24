@@ -1,22 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MyControlResidence.Api.Domain.Entidades;
-using MyControlResidence.Api.Domain.Enums;
-using MyControlResidence.Api.Infrastructure.Context;
+﻿using MyControlResidence.Api.Domain.Enums;
+using MyControlResidence.Api.Domain.Interfaces;
 
 public class RelatorioService
 {
-    private readonly AppDbContext _context;
+    private readonly ITransacaoRepository _transacaoRepository;
 
-    public RelatorioService(AppDbContext context)
+    public RelatorioService(ITransacaoRepository transacaoRepository)
     {
-        _context = context;
+        _transacaoRepository = transacaoRepository;
     }
 
     public async Task<ResponseRelatorioDto> GetRelatorioPorPessoa()
     {
-        var result = await _context.Transacoes
-            .Include(t => t.Pessoa)
+        var transacoes = await _transacaoRepository.GetAllPessoaAsync();
+
+        var result = transacoes
             .GroupBy(t => t.Pessoa.Nome)
             .Select(g => new TransacoesResumoRelatorioDto
             {
@@ -38,7 +36,7 @@ public class RelatorioService
                     DataHoraCriacao = t.DataHoraCriacao
                 }).ToList()
             })
-            .ToListAsync();
+            .ToList();
 
         var totalReceitas = result.Sum(r => r.Receita);
         var totalDespesas = result.Sum(r => r.Despesas);
@@ -54,8 +52,9 @@ public class RelatorioService
 
     public async Task<ResponseRelatorioDto> GetRelatorioPorCategoria()
     {
-        var result = await _context.Transacoes
-            .Include(t => t.Categoria)
+        var transacoes = await _transacaoRepository.GetAllCategoriaAsync();
+
+        var result = transacoes
             .GroupBy(t => t.Categoria.Descricao)
             .Select(g => new TransacoesResumoRelatorioDto
             {
@@ -77,7 +76,7 @@ public class RelatorioService
                     DataHoraCriacao = t.DataHoraCriacao
                 }).ToList()
             })
-            .ToListAsync();
+            .ToList();
 
         var totalReceitas = result.Sum(r => r.Receita);
         var totalDespesas = result.Sum(r => r.Despesas);
