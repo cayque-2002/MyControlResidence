@@ -14,4 +14,13 @@ public class AppDbContext : DbContext
     public DbSet<Categoria> Categorias { get; set; }
 
     public DbSet<Transacao> Transacoes { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Transacao>()
+            .HasOne(t => t.Pessoa)
+            .WithMany()
+            .HasForeignKey(t => t.PessoaId)
+            .OnDelete(DeleteBehavior.Cascade);
+    }
 }

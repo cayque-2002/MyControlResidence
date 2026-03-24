@@ -24,12 +24,14 @@ O sistema permite:
 
 O backend segue o padrão **DDD (Domain Driven Design)** para organização da aplicação.
 
-Estrutura principal:
-# MyControlResidence
+## Padrões e Boas Práticas
 
-Sistema web para **controle financeiro residencial**, permitindo gerenciar pessoas, categorias e transações financeiras, além de gerar relatórios consolidados de receitas e despesas.
+- Aplicação do princípio da Inversão de Dependência (SOLID)
+- Uso de interfaces para desacoplamento da camada de dados
+- Injeção de dependência nativa do ASP.NET Core
+- Separação em camadas (Domain, Application, Infrastructure)
+- Utilização de DTOs para evitar acoplamento entre domínio e API
 
-O projeto foi desenvolvido como **teste técnico** com foco em boas práticas de arquitetura, organização de código e separação de responsabilidades utilizando **DDD (Domain Driven Design)** no backend.
 
 ---
 
@@ -88,7 +90,7 @@ Principais conceitos aplicados:
 - .NET 8
 - ASP.NET Core Web API
 - Entity Framework Core
-- SQL Server (LocalDB)
+- SQL Lite (LocalDB)
 - Arquitetura DDD
 
 ## Frontend
@@ -189,6 +191,13 @@ Campos exibidos:
 - Saldo
 
 ---
+
+## Regras de Negócio
+
+- Menores de idade (menos de 18 anos) só podem possuir transações do tipo despesa
+- Não é permitido associar uma transação a uma categoria incompatível com seu tipo (receita/despesa)
+- Ao excluir uma pessoa, todas as suas transações são removidas automaticamente (cascade delete)
+- Valores de transação devem ser positivos
 
 # Estrutura do Frontend
 

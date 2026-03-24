@@ -30,7 +30,7 @@ namespace MyControlResidence.Api.Domain.Entidades
         public long PessoaId { get; set; }
         public Pessoa Pessoa { get; set; }
 
-        public DateTime DataHoraCriacao { get; set; } = DateTime.Now;
+        public DateTime DataHoraCriacao { get; set; } = DateTime.UtcNow ;
     }
 
     //public class Transacao
